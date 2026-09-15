@@ -14,7 +14,7 @@
 
 | Họ và tên | MSSV | GitHub | Vai trò và công việc | File/commit/PR |
 |---|---|---|---|---|
-|Nguyễn Nhật Thăng |2A202602727 | | | |
+|Nguyễn Nhật Thăng |2A202602727 |nhat-thang |Phụ trách cải thiện system_prompt.md |`system_prompt.md` |
 |Nguyễn Minh Quyền |2A202602438 |ngminhquyen2710-sketch | Phụ trách cải thiện tools.yaml| `tools.yaml` |
 |Vương Việt Hoàng |2A202602528 | VietHoang04-sys | eval_group, kiểm tra case và đánh giá tool routing | `starter_v0/data/eval_group.json`, `starter_v0/artifacts/REPORT.md` |
 |Nguyễn Quang Hữu |2A202602756 | | | |
@@ -32,11 +32,17 @@ Sao chép mục này cho từng thành viên.
 
 ### Nguyễn Nhật Thăng — 2A202602727
 
-- Phần việc và file/commit/PR:
-- Quyết định, khó khăn và cách xử lý:
-- Điều đã học:
-- AI/công cụ đã dùng và cách kiểm tra:
-- Thời điểm đã tự nộp URL repo chung trên VLearn:
+Nguyễn Nhật Thăng - 2A202602727
+- Phần việc và file/commit/PR:Phụ trách cải thiện system_prompt.md cho phiên bản v2. Thêm rule yêu cầu tool search_kb phải chọn category cụ thể (vpn, email, wifi, printing, account, security, hardware, software, meeting_room) khi câu hỏi khớp rõ với một chủ đề, thay vì để mặc định "all"; không chỉnh sửa tools.yaml hay các rule khác trong prompt. Chạy đánh giá bằng run_eval.py và so sánh kết quả v1 → v2.
+
+- Quyết định, khó khăn và cách xử lý:Đọc log eval v1 và xác định 2 case FAIL đều thuộc loại wrong_tool, nguyên nhân là search_kb bị gọi với category="all" dù câu hỏi đã nêu rõ chủ đề (wifi, vpn). Quyết định chỉ thêm đúng một rule cho search_kb, không sửa các rule khác để giữ nguyên phạm vi thay đổi và dễ đối chiếu tác động. Kiểm tra lại tools_hash trước/sau để đảm bảo không vô tình chỉnh tools.yaml. Sau khi chạy lại, case_accuracy và argument_accuracy đều tăng từ 0.8667 lên 0.9, các case trước đó PASS vẫn giữ nguyên PASS.
+
+- Điều đã học:Hiểu rằng lỗi wrong_tool không nhất thiết do chọn sai tool mà có thể do chọn sai argument (ở đây là category) khiến agent trả kết quả không đúng phạm vi mong muốn. Học cách đọc field case_failure_type và observed_mismatch trong log JSON để xác định đúng nguyên nhân trước khi sửa prompt, tránh sửa lan man làm phát sinh regression ở các case đang PASS.
+
+- AI/công cụ đã dùng và cách kiểm tra:Dùng Claude để phân tích log kết quả eval v1 (ảnh chụp PowerShell) và đề xuất rule bổ sung cho system_prompt.md. Kiểm tra bằng cách chạy lại run_eval.py, so sánh case_accuracy, argument_accuracy, và đối chiếu tools_hash không đổi giữa hai lần chạy để xác nhận chỉ có system_prompt.md bị thay đổi.
+
+- Thời điểm đã tự nộp URL repo chung trên VLearn: 11pm 15/9/2026
+
 
 
 ### Nguyễn Minh Quyền — 2A202602438
