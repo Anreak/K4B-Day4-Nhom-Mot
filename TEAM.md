@@ -41,10 +41,10 @@ Sao chép mục này cho từng thành viên.
 
 ### Nguyễn Minh Quyền — 2A202602438
 
-- Phần việc và file/commit/PR:
-- Quyết định, khó khăn và cách xử lý:
-- Điều đã học:
-- AI/công cụ đã dùng và cách kiểm tra:
+- Phần việc và file/commit/PR: Phụ trách cải thiện tools.yaml cho phiên bản v1. Chỉnh sửa phần description của các tool lookup_user, inspect_device và check_service_status, không thay đổi parameters. Mục tiêu là cải thiện tool routing, xử lý thông tin thiếu và mapping argument. Chạy đánh giá bằng run_eval.py và kiểm tra kết quả v0 → v1. Hỗ trợ cãi thiện phiên bản v3
+- Quyết định, khó khăn và cách xử lý:Quyết định chỉ thay đổi description để đánh giá riêng tác động của tool definitions, không thay đổi system_prompt hoặc logic chương trình. Khó khăn ban đầu là lỗi cú pháp YAML do indentation khi viết description. Sau đó kiểm tra lỗi từ traceback, sửa lại format YAML và chạy lại evaluation. Kết quả cải thiện từ 21/30 lên 26/30 case, tương ứng từ 70% lên 86.67%. Một số lỗi còn lại thuộc nhóm confirmation boundary và các case H17, H19 sẽ tiếp tục được xem xét.
+- Điều đã học:Hiểu rõ hơn cách thiết kế tool description cho agent, đặc biệt là cách mô tả điều kiện gọi tool, thông tin bắt buộc và quy tắc mapping argument. Học được rằng chỉ cần thay đổi description cũng có thể ảnh hưởng đáng kể đến khả năng routing và sử dụng tool của LLM. Ngoài ra, hiểu cách sử dụng kết quả evaluation để xác định lỗi và thực hiện cải tiến theo từng phiên bản.
+- AI/công cụ đã dùng và cách kiểm tra:Sử dụng OpenRouter làm provider để chạy agent evaluation. Sử dụng Python và run_eval.py để chạy bộ 30 test case. Kiểm tra các metric gồm case_accuracy, tool_routing_accuracy, argument_accuracy và multiturn_accuracy. So sánh kết quả v0 và v1
 - Thời điểm đã tự nộp URL repo chung trên VLearn:
 
 ### Vương Việt Hoàng — 2A202602528
