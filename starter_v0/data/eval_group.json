@@ -1,7 +1,300 @@
 {
   "dataset_id": "day04_v3_helpdesk_group",
   "dataset_role": "group",
-  "description": "Template intentionally left empty. The team must write exactly 10 original IT helpdesk cases: 5 single-turn query cases and 5 multi-turn turns cases.",
+  "description": "Team-authored evaluation set with exactly 10 original IT helpdesk cases: 5 single-turn query cases and 5 multi-turn turns cases.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_ambiguous_network_request",
+      "phase": "B",
+      "suite": "group",
+      "query": "Mạng chỗ tôi chập chờn, kiểm tra giúp mình với.",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "ambiguous_intent",
+        "difficulty": "medium",
+        "what_it_tests": "Không rõ là sự cố Wi-Fi dịch vụ hay thiết bị cụ thể, agent phải hỏi thêm thay vì tự đoán."
+      }
+    },
+    {
+      "id": "G02_policy_remote_access",
+      "phase": "B",
+      "suite": "group",
+      "query": "Cho mình biết chính sách IT hiện tại về việc truy cập VPN từ mạng Wi-Fi công cộng.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "policy",
+            "args": {
+              "query": "truy cập VPN từ mạng Wi-Fi công cộng",
+              "policy_area": "access_control"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "policy_lookup",
+        "difficulty": "medium",
+        "what_it_tests": "Câu hỏi về quy định nội bộ phải dùng policy thay vì search_kb hoặc kiểm tra thiết bị."
+      }
+    },
+    {
+      "id": "G03_ticket_requires_confirmation",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tạo ticket mức high cho lỗi không đăng nhập được SSO trên máy LT-512.",
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "ticket_confirmation",
+        "difficulty": "medium",
+        "what_it_tests": "Yêu cầu ghi dữ liệu phải dừng ở bước xác nhận, không gọi create_ticket ngay."
+      }
+    },
+    {
+      "id": "G04_cancel_ticket_request",
+      "phase": "B",
+      "suite": "group",
+      "query": "Thôi, hủy yêu cầu tạo ticket lỗi máy in PR-512; chỉ xác nhận là không tạo ticket nhé.",
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "metadata": {
+        "skill": "cancellation",
+        "difficulty": "easy",
+        "what_it_tests": "Ý định hủy bỏ rõ ràng phải thắng hành động tạo ticket và không gọi tool."
+      }
+    },
+    {
+      "id": "G05_ambiguous_ticket_priority",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tạo ticket cho sự cố email của EMP-2041, mức độ cũng khá nghiêm trọng.",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "choice",
+              "options": [
+                "low",
+                "medium",
+                "high",
+                "critical"
+              ]
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "ambiguous_priority",
+        "difficulty": "hard",
+        "what_it_tests": "Từ mô tả 'khá nghiêm trọng' không được tự ánh xạ thành priority; agent phải hỏi lựa chọn hợp lệ."
+      }
+    },
+    {
+      "id": "G06_corrected_asset_network_check",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Kiểm tra mạng trên laptop LT-512."
+        },
+        {
+          "role": "user",
+          "content": "Mình gõ nhầm, mã đúng là LT-519."
+        },
+        {
+          "role": "user",
+          "content": "Đúng rồi, chỉ kiểm tra network trên máy đó."
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {
+              "asset_id": "LT-519",
+              "check": "network"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_asset_correction",
+        "difficulty": "medium",
+        "what_it_tests": "Agent phải dùng asset ID đã được đính chính và loại kiểm tra mới nhất."
+      }
+    },
+    {
+      "id": "G07_change_status_to_policy",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Kiểm tra trạng thái Wi-Fi production."
+        },
+        {
+          "role": "user",
+          "content": "Đổi ý, không cần xem status nữa."
+        },
+        {
+          "role": "user",
+          "content": "Hãy tìm chính sách IT về sử dụng Wi-Fi công cộng cho công việc."
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "policy",
+            "args": {
+              "query": "sử dụng Wi-Fi công cộng cho công việc",
+              "policy_area": "access_control"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_intent_replacement",
+        "difficulty": "hard",
+        "what_it_tests": "Ý định mới nhất thay thế yêu cầu kiểm tra status ở lượt trước."
+      }
+    },
+    {
+      "id": "G08_cancel_after_confirmation_prompt",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tạo ticket mức medium cho lỗi VPN trên LT-519."
+        },
+        {
+          "role": "user",
+          "content": "Tôi chưa muốn tạo nữa, dừng yêu cầu này."
+        },
+        {
+          "role": "user",
+          "content": "Chỉ trả lời rằng yêu cầu đã được hủy, không cần kiểm tra hay tạo ticket."
+        }
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "metadata": {
+        "skill": "multiturn_cancellation",
+        "difficulty": "hard",
+        "what_it_tests": "Lượt hủy cuối cùng phải vô hiệu hóa yêu cầu create_ticket trước đó."
+      }
+    },
+    {
+      "id": "G09_policy_then_confirmed_ticket",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Chính sách IT yêu cầu xử lý thế nào khi VPN production bị gián đoạn?"
+        },
+        {
+          "role": "user",
+          "content": "Nếu cần thì tạo ticket cho sự cố VPN trên LT-519, mức high."
+        },
+        {
+          "role": "user",
+          "content": "Tôi đã xem lại thông tin và xác nhận tạo ticket với nội dung đó."
+        }
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "policy",
+            "args": {
+              "query": "xử lý khi VPN production bị gián đoạn",
+              "policy_area": "incident_response"
+            }
+          },
+          {
+            "name": "create_ticket",
+            "args": {
+              "summary": "Sự cố VPN production trên LT-519",
+              "priority": "high",
+              "asset_id": "LT-519",
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "policy_and_confirmed_write",
+        "difficulty": "hard",
+        "what_it_tests": "Kết hợp tra cứu policy với create_ticket; chỉ tạo ticket sau xác nhận rõ ràng và truyền confirmed=true."
+      }
+    },
+    {
+      "id": "G10_update_ticket_before_confirmation",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tạo ticket lỗi email trên DT-204 mức medium."
+        },
+        {
+          "role": "user",
+          "content": "Đổi mức ưu tiên thành high và thêm thông tin là lỗi xảy ra từ sáng."
+        },
+        {
+          "role": "user",
+          "content": "Hiển thị lại payload mới và hỏi tôi xác nhận trước khi tạo."
+        }
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_confirmation_invalidation",
+        "difficulty": "hard",
+        "what_it_tests": "Thay đổi priority và summary làm mất hiệu lực xác nhận cũ; agent phải hỏi lại trước khi ghi."
+      }
+    }
+  ]
 }
