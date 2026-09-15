@@ -15,7 +15,8 @@
 | Họ và tên | MSSV | GitHub | Vai trò và công việc | File/commit/PR |
 |---|---|---|---|---|
 |Nguyễn Nhật Thăng |2A202602727 | | | |
-|Nguyễn Minh Quyền |2A202602438 | | | |
+|Nguyễn Minh Quyền |2A202602438 |ngminhquyen
+ngminhquyen2710-sketch | Phụ trách cải thiện tools.yaml  | `tools.yaml` |
 |Vương Việt Hoàng |2A202602528 | VietHoang04-sys | eval_group, kiểm tra case và đánh giá tool routing | `starter_v0/data/eval_group.json`, `starter_v0/artifacts/REPORT.md` |
 |Nguyễn Quang Hữu |2A202602756 | | | |
 
