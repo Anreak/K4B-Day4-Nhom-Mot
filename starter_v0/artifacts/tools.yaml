@@ -8,7 +8,13 @@
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: "Yêu cầu người dùng bổ sung thông tin hoặc làm rõ yêu cầu
+     trước khi thực hiện hành động.
+     response_type=text dùng khi cần người dùng cung cấp
+     thêm thông tin hoặc giải thích yêu cầu.
+     response_type=choice dùng khi người dùng cần chọn một trong các giá trị được cung cấp.
+     response_type=yes_no dùng để xác nhận một hành động
+     trước khi thực hiện."
     parameters:
       type: object
       properties:
@@ -28,7 +34,15 @@ tools:
       required: [query]
 
   - name: check_service_status
-    description: "Kiểm tra trạng thái một dịch vụ."
+    description: "Kiểm tra trạng thái của một dịch vụ trong một môi trường cụ thể.
+     environment chỉ nhận các giá trị:
+    - production
+    - staging
+     Không tự động ánh xạ các từ như demo, test, QA, dev
+     thành production hoặc staging.
+     Nếu người dùng sử dụng một tên môi trường không thuộc các giá trị
+     trên hoặc môi trường chưa rõ ràng, cần yêu cầu người dùng chọn
+     production hoặc staging trước khi gọi tool."
     parameters:
       type: object
       properties:
@@ -37,7 +51,27 @@ tools:
       required: [service]
 
   - name: inspect_device
-    description: "Kiểm tra thông tin và chẩn đoán thiết bị."
+    description: "Kiểm tra tình trạng thiết bị dựa trên asset ID.
+
+     asset_id phải là mã tài sản cụ thể, ví dụ LT-204 hoặc DT-031.
+
+     Không được sử dụng các mô tả chung như laptop, máy của tôi
+     hoặc máy tính của tôi làm asset_id.
+
+     Nếu người dùng yêu cầu kiểm tra thiết bị nhưng chưa cung cấp
+     asset ID cụ thể, không được tự đoán hoặc tự tạo asset ID.
+     Cần yêu cầu người dùng cung cấp asset ID.
+
+     Luôn xác định rõ giá trị check khi gọi tool.
+
+     VPN tương ứng với check=vpn.
+     Wi-Fi, network hoặc connectivity tương ứng với check=network.
+     Security, antivirus hoặc encryption tương ứng với check=security.
+     Hardware, battery, disk hoặc memory tương ứng với check=hardware.
+     Software hoặc application tương ứng với check=software.
+     Kiểm tra tổng thể hoặc toàn bộ tương ứng với check=all.
+     Khi người dùng yêu cầu một loại kiểm tra cụ thể,
+     không được dùng check=all."
     parameters:
       type: object
       properties:
@@ -46,7 +80,13 @@ tools:
       required: [asset_id]
 
   - name: lookup_user
-    description: "Tra cứu người dùng trong danh bạ hỗ trợ."
+    description: "Tra cứu thông tin nhân viên bằng employee ID.
+     employee_id phải là mã nhân viên cụ thể, ví dụ EMP-1003.
+     Không sử dụng tên phòng ban, chức vụ, tên người hoặc mô tả như: Sales, Operations, nhân viên bên Sales làm employee_id.
+     Nếu người dùng chưa cung cấp employee ID cụ thể,cần yêu cầu người dùng cung cấp thêm thông tin thay vì tự đoán.
+     Kết quả có thể chứa assigned_assets là các thiết bị được cấp cho nhân viên. 
+     Không tự động gọi inspect_device chỉ vì kết quả có assigned_assets. 
+     Chỉ gọi inspect_device khi người dùng thực sự yêu cầu kiểm tra, chẩn đoán hoặc xem trạng thái của thiết bị."
     parameters:
       type: object
       properties:
