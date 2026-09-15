@@ -57,8 +57,8 @@ Sao chép mục này cho từng thành viên.
 
 ### Nguyễn Quang Hữu — 2A202602756
 
-- Phần việc và file/commit/PR:
-- Quyết định, khó khăn và cách xử lý:
-- Điều đã học:
-- AI/công cụ đã dùng và cách kiểm tra:
-- Thời điểm đã tự nộp URL repo chung trên VLearn:
+- Phần việc và file/commit/PR:  Xử lý phân tích và viết các report, cũng như chia việc, file report và team, và xử lý front-end
+- Quyết định, khó khăn và cách xử lý: Xử lý chia việc, phân tích yêu cầu của đề bài, có khá nhiều thông tin từ rải rác, nên tôi đã dùng ai để gom chúng lại, và xử lý viết báo cáo, cũng như các thông tin được thành viên khác tạo, tôi tổng hợp chúng và điền report
+- Điều đã học: Cách hệ thống sử dụng tool, system prompt , qua việc đọc và phân tích tài liệu và code, hiểu được những lỗ hổng bảo mật, những lý do cho lỗi, và các cách fix lỗi qua việc phân tích việc của các thành viên khác
+- AI/công cụ đã dùng và cách kiểm tra: Đã sử dụng ai để tổng hợp và phân tích thông tin rải rác trong project, cũng như sử dụng ai để wording lại các ý chính
+- Thời điểm đã tự nộp URL repo chung trên VLearn: 10pm 15/9/2026

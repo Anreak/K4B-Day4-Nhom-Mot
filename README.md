@@ -77,6 +77,23 @@ python run_eval.py --provider openrouter --version v0 --suite base --eval-cases 
 
 Thay `openrouter` bằng `openai`, `anthropic` hoặc `gemini` khi dùng provider khác. Không commit `.env`.
 
+## Giao diện chat và transcript
+
+Repo đã có CLI chat để xem hành vi agent và lưu transcript:
+
+```powershell
+cd starter_v0
+python chat.py --provider openrouter --version v0
+```
+
+```powershell
+cd starter_v0
+python -m pip install "streamlit>=1.30.0"
+python -m streamlit run app.py --server.address 127.0.0.1
+```
+
+Mở `http://localhost:8501`. Chọn provider và nhãn version thực sự của cặp `system_prompt.md` / `tools.yaml` trong sidebar. 
+
 ## Tài liệu cần đọc
 
 | File | Dùng khi |
