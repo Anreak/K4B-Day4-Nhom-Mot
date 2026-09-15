@@ -1,45 +1,55 @@
 # Day 04 Lab v3 Report — Trợ lý AI của nhóm
 
 - Lĩnh vực tự chọn: IT Helpdesk
-- Nhiệm vụ và luồng cơ bản đã chốt trước v0:
-- Đường dẫn bộ 30 câu cơ bản và 12 câu an toàn; commit chốt bộ trước v0:
+- Nhiệm vụ và luồng cơ bản đã chốt trước v0: Trợ lý IT Helpdesk; nhận yêu cầu, hỏi lại khi thiếu mã thiết bị/mã nhân viên hoặc thông tin xác nhận, chọn công cụ phù hợp để tra trạng thái dịch vụ, kiểm tra thiết bị, tra người dùng, tìm hướng dẫn/chính sách nội bộ và trình bày kết quả dựa trên dữ liệu công cụ. Nếu người dùng muốn tạo ticket, chỉ ghi dữ liệu sau khi xác nhận đúng nội dung.
+- Đường dẫn bộ 30 câu cơ bản và 12 câu an toàn; commit chốt bộ trước v0: Bộ IT cố định của starter tại `starter_v0/data/eval_base.json` (30 câu: 20 một lượt, 10 nhiều lượt) và `starter_v0/data/eval_adversarial.json` (12 câu an toàn). Hai file có từ commit gốc `2c1a5ec`.
 - Chức năng mở rộng ngoài luồng cơ bản (nếu có; tối đa 10 trong tổng 100 điểm):
 
 ## Team
 
-- Team:
+- Team: Nhóm Một
 - Thành viên và INDIVIDUAL: [TEAM.md](../../TEAM.md)
-- Members:
-- Provider/model:
+- Members: Nguyễn Nhật Thăng, Nguyễn Minh Quyền, Vương Việt Hoàng, Nguyễn Quang Hữu
+- Provider/model: OpenRouter
 
 # PHẦN A — Giới thiệu agent
 
 ## A1. Agent này làm được gì
 
-> Viết 1–2 câu mô tả capability và giới hạn của agent.
+Agent hỗ trợ IT Helpdesk của Northstar Labs bằng cách tra dữ liệu giả lập về dịch vụ, thiết bị, người dùng, hướng dẫn và chính sách; agent có thể hỏi lại khi thiếu thông tin, tổng hợp finding và đề xuất ticket. Dữ liệu chỉ là snapshot của bài lab, không phản ánh hệ thống thật; trong Web UI, ticket chỉ được ghi sau khi người dùng xác nhận đúng nội dung qua nút xác nhận.
 
 **Link dùng thử:**
 
-> URL:
+> Chạy tại máy theo [README.md](../../README.md), rồi mở `http://localhost:8501`. 
 
 ## A2. Tool agent có
 
 | Tool | Chức năng | Core / optional / team-built |
 |---|---|---|
-| clarify | Hỏi bổ sung hoặc xác nhận | core |
-|  |  |  |
+| `clarify` | Hỏi lại khi thiếu thông tin hoặc cần xác nhận. | core |
+| `search_kb` | Tìm bài hướng dẫn trong knowledge base IT giả lập. | core |
+| `check_service_status` | Tra trạng thái dịch vụ theo môi trường production/staging. | core |
+| `inspect_device` | Xem thông tin và chẩn đoán của thiết bị theo asset ID. | core |
+| `lookup_user` | Tra nhân viên theo employee ID trong danh bạ hỗ trợ. | core |
+| `format_incident_report` | Định dạng finding đã có thành báo cáo brief/technical/handoff. | core |
+| `policy` | Tìm các mục trong chính sách IT nội bộ giả lập. | optional (starter) |
+| `create_ticket` | Kiểm tra payload và tạo ticket local sau xác nhận đúng nội dung. | optional (starter) |
+| `search_device_info` | Tìm thông tin công khai về hãng/model thiết bị qua Tavily; không gửi mã hay dữ liệu nội bộ. | optional (starter) |
+
+Phân loại trên theo `track` trong các file `tools/<name>/TOOL.md`.
 
 ## A3. Câu hỏi mẫu
 
-1.
-2.
-3.
+1. “VPN production hiện có đang gặp sự cố không?” — kỳ vọng gọi `check_service_status(service="vpn", environment="production")`.
+2. “Kiểm tra riêng kết nối VPN trên LT-204.” — kỳ vọng gọi `inspect_device(asset_id="LT-204", check="vpn")`.
+3. “Tìm hướng dẫn cấu hình Outlook profile trên Windows 11.” — kỳ vọng gọi `search_kb` với `category="email"`.
 
-## A4. Kịch bản demo đã rehearse
+## A4. Kịch bản demo và bằng chứng hiện có
 
 | Scenario | Tool trace cần thấy | Cải thiện version | Fallback run/transcript |
 |---|---|---|---|
-|  |  |  |  |
+| Tra trạng thái VPN production (đã có một lượt chat lưu lại) | `check_service_status(service="vpn", environment="production")`; kết quả `degraded`, incident `INC-1042`. | Transcript mang nhãn v0; chưa có bằng chứng cải thiện ở v1–v3. | [`transcripts/v0_openrouter_20260915T194012034827_uXGfF4xn.transcript.json`](../transcripts/v0_openrouter_20260915T194012034827_uXGfF4xn.transcript.json); case `H01_service_status_routing` trong [run v0](../runs/v0_B_base_openrouter_20260915T183654405815.json). |
+
 
 # PHẦN B — Chi tiết và evidence
 
