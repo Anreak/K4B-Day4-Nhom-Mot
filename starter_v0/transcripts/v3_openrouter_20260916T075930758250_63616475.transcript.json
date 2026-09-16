@@ -1,0 +1,16 @@
+{
+  "transcript_id": "v3_openrouter_20260916T075930758250_63616475",
+  "version": "v3",
+  "artifact_version": "v3+p33fbce7d36ce+tc9af7b9735e3",
+  "prompt_hash": "33fbce7d36cedc7946947ddada1c0e8080e07a06a80a070fa77051004f963f3f",
+  "tools_hash": "c9af7b9735e3983ee7d380eb90d323c3f406ce49938542529134c7acd6cdad2a",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "artifacts\\system_prompt.md",
+  "tools": "artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-09-16T07:59:30",
+  "updated_at": "2026-09-16T07:59:30",
+  "turns": []
+}

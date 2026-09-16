@@ -5,9 +5,9 @@
 ## Thông tin bài nộp
 
 - Tên nhóm: Nhóm Một
-- Người đại diện / MSSV: 2A202602756
+- Người đại diện / MSSV: Nguyễn Quang Hữu / 2A202602756
 - Tên repo: `K4B-Day4-Nhom-Mot`
-- URL repo, nhánh nộp, commit chốt:https://github.com/Anreak/K4B-Day4-Nhom-Mot
+- URL repo, nhánh nộp, commit chốt: https://github.com/Anreak/K4B-Day4-Nhom-Mot ; `main`; commit chốt cần điền sau khi nhóm commit evidence mới.
 - Deadline áp dụng và link thông báo đổi hạn nếu có:
 
 ## Thành viên
@@ -17,14 +17,14 @@
 |Nguyễn Nhật Thăng |2A202602727 |nhat-thang |Phụ trách cải thiện system_prompt.md |`system_prompt.md` |
 |Nguyễn Minh Quyền |2A202602438 |ngminhquyen2710-sketch | Phụ trách cải thiện tools.yaml| `tools.yaml` |
 |Vương Việt Hoàng |2A202602528 | VietHoang04-sys | eval_group, kiểm tra case và đánh giá tool routing | `starter_v0/data/eval_group.json`, `starter_v0/artifacts/REPORT.md` |
-|Nguyễn Quang Hữu |2A202602756 | | | |
+|Nguyễn Quang Hữu |2A202602756 |Anreak |Team leader, phụ trách phân tích lỗi, xử lý ui |`report.md`, `app.py` |
 
 ## Nhận xét chung
 
-- Kết quả và bằng chứng:
-- Thay đổi hiệu quả nhất:
-- Giới hạn còn lại:
-- Cách phân công và tích hợp:
+- Kết quả và bằng chứng: [v0 21/30](starter_v0/runs/v0_B_base_openrouter_20260915T184445899100.json) → [v1 26/30](starter_v0/runs/v1_B_base_openrouter_20260915T194806962674.json) → [v2 27/30](starter_v0/runs/v2_B_base_openrouter_20260915T202721844110.json) → [v3 lịch sử 30/30](starter_v0/runs/v3_B_base_openrouter_20260915T204606868024.json). Checkout [v3 hiện tại 29/30 base](starter_v0/runs/v3_B_base_openrouter_20260916T080132508130.json), [10/10 group v2](starter_v0/runs/v3_B_group_openrouter_20260916T081414922998.json), [5/12 safety](starter_v0/runs/v3_B_adversarial_openrouter_20260916T080226063928.json); các run hiện tại measured đủ, provider error bằng 0 và cùng artifact hash `v3+pb9fa4c9194fe+tc9af7b9735e3`. [Group v1 9/10](starter_v0/runs/v3_B_group_openrouter_20260916T080156393056.json) và [dataset v1](starter_v0/data/eval_group_v1.json) được giữ để đối chiếu sửa case. [CLI transcript v3](starter_v0/transcripts/v3_openrouter_20260916T080345155254.transcript.json) có yêu cầu bình thường, thiếu mã, sửa mã và hủy ticket. [Web UI transcript](starter_v0/transcripts/v3_openrouter_20260916T082113625059_f4f05bda.transcript.json) cho thấy tool result `degraded` và lỗi `asset_not_found` trong expander. [REPORT.md](starter_v0/artifacts/REPORT.md) đối chiếu tool results/write.
+- Thay đổi hiệu quả nhất: mô tả tool của Quyền ở commit `1181038` nâng base v0→v1 21→26; prompt category của Thăng ở `ebe8d23` nâng v1→v2 26→27; Hoàng viết bộ nhóm ở `22e98e7`; Hữu tích hợp Streamlit/README ở `849b6c4`. 
+- Giới hạn còn lại: A10/A11 trong safety hiện tại `create_ticket(confirmed=true)` và tool trả `created`, ghi hai ticket mock; A03 trả `missing_summary`, A12 `missing_api_key`. Group v1 G06 `asset_not_found` và G09 có kỳ vọng policy từ lượt trước dù evaluator chỉ yêu cầu xử lý lượt cuối; v2 sửa test design, không xóa run cũ. Group v2 G02/G07 PASS routing nhưng policy result rỗng. UI đã kiểm tra khởi động bằng Streamlit AppTest và HTTP 200.
+- Cách phân công và tích hợp: Thăng phụ trách prompt, Quyền tool declarations, Hoàng group cases, Hữu UI và tổng hợp report. Các commit kỹ thuật ở trên nằm trong lịch sử `main`; mỗi người tự chịu trách nhiệm chỉnh lời tự đánh giá INDIVIDUAL của mình.
 
 ## INDIVIDUAL
 
@@ -63,8 +63,8 @@ Nguyễn Nhật Thăng - 2A202602727
 
 ### Nguyễn Quang Hữu — 2A202602756
 
-- Phần việc và file/commit/PR:  Xử lý phân tích và viết các report, cũng như chia việc, file report và team, và xử lý front-end
-- Quyết định, khó khăn và cách xử lý: Xử lý chia việc, phân tích yêu cầu của đề bài, có khá nhiều thông tin từ rải rác, nên tôi đã dùng ai để gom chúng lại, và xử lý viết báo cáo, cũng như các thông tin được thành viên khác tạo, tôi tổng hợp chúng và điền report
+- Phần việc và file/commit/PR: 'REPORT.md' Xử lý phân tích và viết các report, cũng như chia việc, file report và team, và xử lý front-end
+- Quyết định, khó khăn và cách xử lý: Xử lý chia việc, phân tích yêu cầu của đề bài, có khá nhiều thông tin từ rải rác, nên tôi đã dùng ai để gom chúng lại, và xử lý viết báo cáo, cũng như các thông tin được thành viên khác tạo, tôi tổng hợp chúng và điền report, cũng như khó khăn lớn là việc gom các công việc của thành viên thành 1 thứ tự hoàn chỉnh
 - Điều đã học: Cách hệ thống sử dụng tool, system prompt , qua việc đọc và phân tích tài liệu và code, hiểu được những lỗ hổng bảo mật, những lý do cho lỗi, và các cách fix lỗi qua việc phân tích việc của các thành viên khác
 - AI/công cụ đã dùng và cách kiểm tra: Đã sử dụng ai để tổng hợp và phân tích thông tin rải rác trong project, cũng như sử dụng ai để wording lại các ý chính
-- Thời điểm đã tự nộp URL repo chung trên VLearn: 10pm 15/9/2026
+- Thời điểm đã tự nộp URL repo chung trên VLearn: 8am 16/9/2026

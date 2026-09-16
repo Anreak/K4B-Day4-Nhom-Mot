@@ -181,14 +181,13 @@ def ticket_decision(chat: dict[str, Any], confirm: bool) -> None:
         status = "action_completed" if created else "action_error"
         user = "[UI] Xác nhận tạo ticket với đúng nội dung hiển thị"
     else:
-        event = {"tool": "create_ticket", "args": draft,
-                 "result": {"status": "cancelled", "written": False}}
         reply, status = "Đã hủy ticket; không có dữ liệu được ghi.", "action_cancelled"
         user = "[UI] Hủy ticket đang chờ xác nhận"
     save_turn(chat, {
         "turn_index": len(chat["transcript"]["turns"]) + 1,
         "started_at": now_iso(), "user": user, "status": status,
-        "assistant_text": reply, "rounds": [], "tool_events": [event],
+        "assistant_text": reply, "rounds": [],
+        "tool_events": [event] if confirm else [],
         "ui_events": [{"type": "ticket_confirmed" if confirm else "ticket_cancelled"}],
     }, reply)
 
@@ -228,8 +227,8 @@ def main() -> None:
     st.title("🛠️ IT Helpdesk Agent — Northstar Labs")
     with st.sidebar:
         provider_name = st.selectbox("Provider", ["openrouter", "openai", "anthropic", "gemini"])
-        version = st.selectbox("Artifact version", ["v0", "v1", "v2", "v3"])
-        st.caption("Chọn nhãn khớp với prompt và tools đang chạy.")
+        version = "v3"
+        st.caption("Phiên bản artifact đang chạy được tính từ prompt và tools hiện tại.")
 
     system_prompt = PROMPT_PATH.read_text(encoding="utf-8")
     tools = to_openai_tools(load_tool_declarations(TOOLS_PATH))

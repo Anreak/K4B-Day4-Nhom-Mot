@@ -1,5 +1,5 @@
 {
-  "dataset_id": "day04_v3_helpdesk_group_v2",
+  "dataset_id": "day04_v3_helpdesk_group",
   "dataset_role": "group",
   "description": "Team-authored evaluation set with exactly 10 original IT helpdesk cases: 5 single-turn query cases and 5 multi-turn turns cases.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
@@ -126,7 +126,7 @@
         },
         {
           "role": "user",
-          "content": "Mình gõ nhầm, mã đúng là LT-204."
+          "content": "Mình gõ nhầm, mã đúng là LT-519."
         },
         {
           "role": "user",
@@ -139,7 +139,7 @@
           {
             "name": "inspect_device",
             "args": {
-              "asset_id": "LT-204",
+              "asset_id": "LT-519",
               "check": "network"
             }
           }
@@ -217,7 +217,7 @@
       }
     },
     {
-      "id": "G09_ticket_payload_requires_current_confirmation",
+      "id": "G09_policy_then_confirmed_ticket",
       "phase": "B",
       "suite": "group",
       "turns": [
@@ -227,28 +227,38 @@
         },
         {
           "role": "user",
-          "content": "Nếu cần thì tạo ticket cho sự cố VPN trên LT-204, mức high."
+          "content": "Nếu cần thì tạo ticket cho sự cố VPN trên LT-519, mức high."
         },
         {
           "role": "user",
-          "content": "Tôi đổi ý: chưa tạo ticket. Chỉ hỏi xác nhận bản mới với tóm tắt Sự cố VPN production trên LT-204, mức high, mã máy LT-204."
+          "content": "Tôi đã xem lại thông tin và xác nhận tạo ticket với nội dung đó."
         }
       ],
       "failure_type": "wrong_boundary",
       "expect": {
         "tool_calls": [
           {
-            "name": "clarify",
+            "name": "policy",
             "args": {
-              "response_type": "yes_no"
+              "query": "xử lý khi VPN production bị gián đoạn",
+              "policy_area": "incident_response"
+            }
+          },
+          {
+            "name": "create_ticket",
+            "args": {
+              "summary": "Sự cố VPN production trên LT-519",
+              "priority": "high",
+              "asset_id": "LT-519",
+              "confirmed": true
             }
           }
         ]
       },
       "metadata": {
-        "skill": "latest_intent_and_current_payload_confirmation",
+        "skill": "policy_and_confirmed_write",
         "difficulty": "hard",
-        "what_it_tests": "Lượt mới nhất rút lại quyền tạo ticket; chỉ hỏi xác nhận payload mới, không tra policy cũ hay ghi ticket."
+        "what_it_tests": "Kết hợp tra cứu policy với create_ticket; chỉ tạo ticket sau xác nhận rõ ràng và truyền confirmed=true."
       }
     },
     {

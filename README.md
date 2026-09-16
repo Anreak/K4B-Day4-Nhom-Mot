@@ -83,16 +83,18 @@ Repo đã có CLI chat để xem hành vi agent và lưu transcript:
 
 ```powershell
 cd starter_v0
-python chat.py --provider openrouter --version v0
+.\.venv\Scripts\python.exe chat.py --provider openrouter --version v3
+# Gõ /exit để kết thúc; file JSON được lưu vào transcripts/
 ```
+
+Từ thư mục gốc của repo, mở Web UI bằng môi trường ảo đã cài `requirements.txt` (file này đã có `streamlit>=1.30.0`):
 
 ```powershell
 cd starter_v0
-python -m pip install "streamlit>=1.30.0"
-python -m streamlit run app.py --server.address 127.0.0.1
+.\.venv\Scripts\python.exe -m streamlit run app.py --server.address 127.0.0.1
 ```
 
-Mở `http://localhost:8501`. Chọn provider và nhãn version thực sự của cặp `system_prompt.md` / `tools.yaml` trong sidebar. 
+Mở `http://localhost:8501`. Chọn provider trong sidebar; UI hiển thị nhãn v3 cùng hash của cặp `system_prompt.md` / `tools.yaml` đang chạy. Nhập câu hỏi trong chat; câu trả lời đọc bình thường, mở **Chi tiết xử lý** dưới mỗi lượt để xem tool, đầu vào thực thi, kết quả hoặc lỗi. Sidebar có nút tải transcript JSON. Khi ticket chờ xác nhận, đọc đúng summary/priority/asset trước khi bấm **Xác nhận** hoặc **Hủy**. Nhờ một thành viên khác chạy lại chính các lệnh trên từ clone sạch và ghi kết quả vào [TEAM.md](TEAM.md).
 
 ## Tài liệu cần đọc
 
